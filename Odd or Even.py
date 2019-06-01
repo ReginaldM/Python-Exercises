@@ -1,5 +1,6 @@
-import datetime
+def oddOrEven(num):
+    return print("Even") if (num%2) == 0 else print("Odd")
 
-c = datetime.datetime.now()
+givenNum = int(input("Enter a number: "))
 
-print(c.year)
+oddOrEven(givenNum)
