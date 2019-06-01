@@ -5,7 +5,6 @@ currentDate = datetime.date.today().strftime("%Y")
 userName = input("Enter your Name: ")
 userAge = int(input('Please enter your age: '))
 numTimes = int(input("Enter any number: "))
-
 predictYear = 100 - userAge
 
 
