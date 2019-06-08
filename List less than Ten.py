@@ -1,10 +1,5 @@
-numList = [1,5,7,8,9,6,3]
-lessThanFive = []
+import random
 
-for i in numList:
-    if i < 5:
-        lessThanFive.append(i)
-    else:
-        pass
+numList = random.sample(range(0,25),15)
 
-print(lessThanFive)
+print(f"numList = {numList} \n\n{[i for i in numList if i<8]}")
