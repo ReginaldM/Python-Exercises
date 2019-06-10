@@ -10,7 +10,7 @@ if in different positions, they are "cows"
 secretNum = []
 
 def genNum():
-    for i in range(9):
+    for iSteps in range(9):
         ranNum = str(random.randint(0,9))
         if len(secretNum) == 4:
             break
@@ -18,32 +18,32 @@ def genNum():
             pass
         else:
             secretNum.append(ranNum)
-
+## End of genNum method
 
 def findBullCow(secretDigit):
+    genNum()
+    print("Type the word 'exit' to quit the program")
     while True:
         bull = 0
         cow = 0
-
         playerResponse = input("Enter: ")
-        
+
         if playerResponse == 'exit':
             break
         elif secretDigit == list(playerResponse):
-            print(f"\nCongratulations on getting 4 bulls\n")
-            print(f" secretDigit: {secretDigit}\n playerResponse: {list(playerResponse)}\n")
+            sD = "".join(secretDigit)
+            print(f"\nCongratulations! 4 bulls acquired \
+                \nSecret Number: {sD}\n Player Number: {playerResponse}\n")
             break
         else:
             for x,y in zip(secretDigit,list(playerResponse)):
                 if x == y:
                     bull += 1
-                else:        
-                    for y in list(playerResponse):
-                        if y == x:
-                            cow += 1
-                        else:
-                            pass
-        print(f"bulls = {bull}, cows = {cow}\n")
+                elif y in secretDigit:
+                    cow += 1
 
-genNum()
+        print(f"bulls = {bull}, cows = {cow}\n")
+## End of findBullCow method
+
+
 findBullCow(secretNum)
