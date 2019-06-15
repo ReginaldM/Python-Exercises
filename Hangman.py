@@ -48,27 +48,27 @@ while tries != 0:
     userWord = " ".join(user)
     finalWord = " ".join(secWord)
     
-    print(f"Incorrect words guessed: {wrongs} \
+    print(f"\nIncorrect words guessed: {wrongs} \
             \nGuess this word: \n\n{userWord}\n")
     answer = input(f"\nEnter your guess: ").upper()
     userLetter = list(answer)
 
-    if True:
-        for z in userLetter:
-            if z in secWord:
-                wordIndexs = [m.start() for m in re.finditer(z, sWord)]
-                for item in wordIndexs:
-                    user[item] = z
-                if user == secWord:
-                    print(f"\n{finalWord}\n\n{('Congratulations').upper()}")
+    for z in userLetter:
+        if z in secWord:
+            wordIndexs = [m.start() for m in re.finditer(z, sWord)]
+            for item in wordIndexs:
+                user[item] = z
+            if user == secWord:
+                print(f"\n{finalWord}\n\n{('Congratulations').upper()}")
+                sys.exit()
+        else:
+            if z not in wrongWords:
+                wrongWords.append(z)
+                tries -= 1
+                if tries <= 0:
+                    print(f"\n\nYou ran out of guesses. \
+                        \nThe word was:   {finalWord}")
                     sys.exit()
-            else:
-                if z not in wrongWords:
-                    wrongWords.append(z)
-                    tries -= 1
-                    if tries <= 0:
-                        print(f"The word was {finalWord} \nYou ran out of guesses")
-                        sys.exit()
 
 
 
