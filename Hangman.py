@@ -46,6 +46,7 @@ tries = 7
 while tries != 0:
     wrongs = ", ".join(wrongWords)
     userWord = " ".join(user)
+    finalWord = " ".join(secWord)
     
     print(f"Incorrect words guessed: {wrongs} \
             \nGuess this word: \n\n{userWord}\n")
@@ -59,7 +60,6 @@ while tries != 0:
                 for item in wordIndexs:
                     user[item] = z
                 if user == secWord:
-                    finalWord = " ".join(secWord)
                     print(f"\n{finalWord}\n\n{('Congratulations').upper()}")
                     sys.exit()
             else:
