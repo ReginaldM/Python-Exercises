@@ -1,13 +1,49 @@
-import re, sys
+import re, sys, os, csv, random
 
-sWord = ('tshimologo').upper()
+''' Change Directory '''
+os.chdir("d:/documents")
+print(f"\n{os.getcwd()}")
+
+def openFile():
+    with open("sowpods.txt", "r") as rFile:
+        oFile = csv.reader(rFile)
+
+        for docLine in oFile:
+            for docWord in docLine:
+                wordList = docWord.split(" ")
+                for wordStrings in wordList:
+                    if wordStrings != "":
+                        wordBucket.append(wordStrings)
+            
+    return f"WordBucket has been populated with {len(wordBucket)} words."
+## End of OpenFile() method
+
+def generateWord():
+    ## a variable that'll represent a word in Array
+    wordBucketIndex = random.randint(0,len(wordBucket))
+
+    try:
+        wordFromIndex = wordBucket[wordBucketIndex].upper()
+    except IndexError as listIndexError:
+        wordFromIndex = wordBucket[wordBucketIndex-1].upper()
+        # outputErr = input("print Error Y/N: ").upper()
+        # if outputErr == "Y":
+            # print(f"\n{listIndexError}\n")
+
+    global sWord
+    sWord = wordFromIndex 
+    return wordFromIndex
+## End of generateWord() function
+
+wordBucket = []
+openFile()
+generateWord()
 secWord = list(sWord)
 user = ['_' for i in secWord]
 wrongWords = []
+tries = 7
 
-i = 7
-
-while i != 0:
+while tries != 0:
     wrongs = ", ".join(wrongWords)
     userWord = " ".join(user)
     
@@ -29,9 +65,9 @@ while i != 0:
             else:
                 if z not in wrongWords:
                     wrongWords.append(z)
-                    i -= 1
-                    if i <= 0:
-                        print("You ran out of guesses")
+                    tries -= 1
+                    if tries <= 0:
+                        print(f"The word was {finalWord} \nYou ran out of guesses")
                         sys.exit()
 
 
