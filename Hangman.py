@@ -65,5 +65,5 @@ while tries != 0:
                 tries -= 1
                 if tries <= 0:
                     print(f"\n\nYou ran out of guesses. \
-                        \nThe word was:   {finalWord}")
+                        \nThe word was:   {sWord}")
                     sys.exit()
