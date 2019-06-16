@@ -1,4 +1,4 @@
-import re, sys, os, csv, random
+import os, re, csv, sys, random
 
 ''' Change Directory '''
 os.chdir("d:/documents")
@@ -38,15 +38,13 @@ def generateWord():
 wordBucket = []
 openFile()
 generateWord()
-secWord = list(sWord)
-user = ['_' for i in secWord]
+user = ['_' for i in sWord]
 wrongWords = []
 tries = 7
 
 while tries != 0:
     wrongs = ", ".join(wrongWords)
     userWord = " ".join(user)
-    finalWord = " ".join(secWord)
     
     print(f"\nIncorrect words guessed: {wrongs} \
             \nGuess this word: \n\n{userWord}\n")
@@ -54,12 +52,12 @@ while tries != 0:
     userLetter = list(answer)
 
     for z in userLetter:
-        if z in secWord:
+        if z in sWord:
             wordIndexs = [m.start() for m in re.finditer(z, sWord)]
             for item in wordIndexs:
                 user[item] = z
-            if user == secWord:
-                print(f"\n{finalWord}\n\n{('Congratulations').upper()}")
+            if userWord == sWord:
+                print(f"\n{sWord}\n\n{('Congratulations').upper()}")
                 sys.exit()
         else:
             if z not in wrongWords:
@@ -69,27 +67,3 @@ while tries != 0:
                     print(f"\n\nYou ran out of guesses. \
                         \nThe word was:   {finalWord}")
                     sys.exit()
-
-
-
-##while i != 0:
-##    wrongs = ", ".join(wrongWords)
-##    userWord = " ".join(user)
-##    
-##    print(f"Incorrect words guessed: {wrongs} \
-##            \nGuess this word: \n\n{userWord}\n")
-##    userLetter = input(f"\n{i} Enter: ")
-##
-##    if userLetter == sWord or user == secWord:
-##        print("\n{userWord}\nCongratulations")
-##        break
-##    elif userLetter in secWord:
-##        wordIndexs = [m.start() for m in re.finditer(userLetter, sWord)]
-##        for item in wordIndexs:
-##            user[item] = userLetter
-##        if user == secWord:
-##            print(f"\n{userWord}\nCongratulations")
-##            break
-##    else:
-##        wrongWords.append(userLetter)
-##        i -= 1
