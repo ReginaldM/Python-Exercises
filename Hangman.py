@@ -5,7 +5,7 @@ os.chdir("d:/documents")
 print(f"\n{os.getcwd()}")
 
 def openFile():
-    with open("sowpods.txt", "r") as rFile:
+    with open("test.txt", "r") as rFile:
         oFile = csv.reader(rFile)
 
         for docLine in oFile:
@@ -20,15 +20,8 @@ def openFile():
 
 def generateWord():
     ## a variable that'll represent a word in Array
-    wordBucketIndex = random.randint(0,len(wordBucket))
-
-    try:
-        wordFromIndex = wordBucket[wordBucketIndex].upper()
-    except IndexError as listIndexError:
-        wordFromIndex = wordBucket[wordBucketIndex-1].upper()
-        # outputErr = input("print Error Y/N: ").upper()
-        # if outputErr == "Y":
-            # print(f"\n{listIndexError}\n")
+    wordBucketIndex = random.randint(0,len(wordBucket) - 1)
+    wordFromIndex = wordBucket[wordBucketIndex].upper()
 
     global sWord
     sWord = wordFromIndex 
@@ -51,19 +44,23 @@ while tries != 0:
     answer = input(f"\nEnter your guess: ").upper()
     userLetter = list(answer)
 
-    for z in userLetter:
-        if z in sWord:
-            wordIndexs = [m.start() for m in re.finditer(z, sWord)]
-            for item in wordIndexs:
-                user[item] = z
-            if userWord == sWord:
-                print(f"\n{sWord}\n\n{('Congratulations').upper()}")
-                sys.exit()
-        else:
-            if z not in wrongWords:
-                wrongWords.append(z)
-                tries -= 1
-                if tries <= 0:
-                    print(f"\n\nYou ran out of guesses. \
-                        \nThe word was:   {sWord}")
+    if answer.isalpha():        
+        for letters in userLetter:
+            if letters in sWord:
+                letterIndexs = [m.start() for m in re.finditer(letters, sWord)]
+                for indx in letterIndexs:
+                    user[indx] = letters
+                if user == list(sWord):  # userWord[::2] == sWord
+                    print(f"\n{sWord}\n\n{('Congratulations').upper()}")
                     sys.exit()
+            else:
+                if letters not in wrongWords:
+                    wrongWords.append(letters)
+                    tries -= 1
+                    if tries <= 0:
+                        print(f"\n\nYou ran out of guesses. \
+                            \nThe word was:   {sWord}")
+                        sys.exit()
+    else:
+        print("Your input is not a valid Alphabet".upper())
+        continue
