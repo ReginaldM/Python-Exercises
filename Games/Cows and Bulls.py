@@ -2,7 +2,7 @@ import random
 
 """
 Player enters a 4-digit secret number. The digits must be all different.
-The player tries to guess the numberthat matches.
+The player tries to guess the number that matches.
 If the matching digits are in their right positions, they are "bulls",
 if in different positions, they are "cows"
 """
@@ -14,9 +14,7 @@ def genNum():
         ranNum = str(random.randint(0,9))
         if len(secretNum) == 4:
             break
-        elif ranNum in secretNum:
-            pass
-        else:
+        elif ranNum not in secretNum:
             secretNum.append(ranNum)
 ## End of genNum method
 
@@ -33,7 +31,7 @@ def findBullCow(secretDigit):
         elif secretDigit == list(playerResponse):
             sD = "".join(secretDigit)
             print(f"\nCongratulations! 4 bulls acquired \
-                \nSecret Number: {sD}\n Player Number: {playerResponse}\n")
+                \n Secret Number: {sD}\n Player Number: {playerResponse}\n")
             break
         else:
             for x,y in zip(secretDigit,list(playerResponse)):
