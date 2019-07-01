@@ -72,13 +72,6 @@ retiles = scrabble.tiles
 hand = []
 
 def giveHand(handList):
-    # TODO:
-    """
-        checks the length of hand is less than 7
-        if less than add letters so hand can be length of 7
-        for every letter taken from tiles,
-        the letter should be removed from tiles
-    """
     newList = handList
     if len(handList) >= 7:
         return handList
@@ -94,27 +87,23 @@ def giveHand(handList):
                 retiles.remove(letter.lower())
         handList = newList
     return handList
-
-
-        
-    """
-    newtiles = []
-    if len(handList) >= 7:
-        return handList
-    else:
-        nLetters = 7 - len(handList)
-        for i in range(nLetters):
-            if len(retiles) <= 0:
-                print("GAME OVER")
-                sys.exit()
-            newtiles.append(retiles[random.randint(0,len(retiles)-1)])
-        for y in newtiles:
-            retiles.remove(y.lower())
-
-    handList += newtiles           
-    return handList
-    """
 ## End of GiveHand function
+
+
+def exchangeHand(someList, someHand):
+    if len(someList) <= 7:
+        return "You cannot exchange when there are 7 or less tiles in the bag"
+    else:
+        removeTiles = input("\nWhat letters do you want to exchange: ").upper()
+        if len(removeTiles) <= 7:
+            for letters in removeTiles:
+                if letters in someHand:
+                    someList += letters
+                    someHand.remove(letters)
+            retiles = someList
+        print()
+        return giveHand(someHand)
+## End of Exchange function
 
 
 def checkWord(someAnswer, someHand):
@@ -123,6 +112,7 @@ def checkWord(someAnswer, someHand):
         see if word exist in wordbucket
         every letter used to answer be removed from hand        
     """
+    global hand
     newList = []
     spareHand = []
     spareHand += someHand
@@ -144,52 +134,22 @@ def checkWord(someAnswer, someHand):
                 print(f"\n {letter} does not exist in the hand given to you.\n")
                 return giveHand(someHand)
         for nletter in newList:
-            '# TODO:'
-            """
-                MAM is in newList but second M not in hand
-                hand = X A A S L M S
-                someAnswer = MAM
-                newList = ['M', 'A', 'M']
-            """
             if nletter in spareHand:
                 spareHand.remove(nletter)
             else:
                 print("\n Letters that appear once cannot be used twice\n")
-                return print(f"Spare word: {spareHand} \nSome Word: {someHand}")#giveHand(spareHand)
-
-            someHand = spareHand
-            hand = spareHand
-            print(f"You scored {scrabble.calcPoints(someAnswer)} points.\
-\nSpare word: {spareHand}\
-\nSome hand: {someHand}\
-\nHand: {hand}\n")
-
-            return giveHand(someHand)
+                return giveHand(hand) 
+        hand = spareHand
+            
+        print(f"\nYou scored {scrabble.calcPoints(someAnswer)} points\n")
+        return giveHand(hand)
 
     else:
         print("\n Lol, That word does not exist in my vocabulary\n")
     return giveHand(hand)
 ## End of checkWord function
 
-
-def exchangeHand(someList, someHand):
-    if len(someList) <= 7:
-        return "You cannot exchange when there are 7 or less tiles in the bag"
-    else:
-        removeTiles = input("\nWhat letters do you want to exchange: ").upper()
-        if len(removeTiles) <= 7:
-            for letters in removeTiles:
-                if letters in someHand:
-                    someList += letters
-                    someHand.remove(letters)
-            retiles = someList
-        print()
-        return giveHand(someHand)
-## End of Exchange function
-
-
 print("Type '.EX' to exchange tiles in your hand. .EX \n")
-
 giveHand(hand)
 
 while True:
