@@ -36,6 +36,7 @@ class scrabble:
 
 
     def openFile():
+        '''Reads a text file and extract words into the wordBucket'''
         with open("sowpods.txt", "r") as oFile:
             rFile = csv.reader(oFile)
 
@@ -50,23 +51,21 @@ class scrabble:
     ## End of OpenFile() method
 
 
-    def calcPoints(words):
-        # TODO:
-        """
-            Calculate a word that has "*" before replacing the asterisks
-        """
+    def calcPoints(word):
+        '''Calculate points for a given word'''
         points = 0
-        for letter in words.lower():
+        for letter in word.lower():
             if letter in scrabble.ScrabbleLetterValue.keys():
                 points += scrabble.ScrabbleLetterValue[letter]
-        points *= len(words)
-        if len(words) == 7 and scrabble.turn == 1:
+        points *= len(word)
+        if len(word) == 7 and scrabble.turn == 1:
             points += 50
         scrabble.score += points
         return points
     ## End of CalculatePoints() function
 
     def giveHand(handList):
+        '''Deals 7 tiles to a player.'''
         scrabble.openFile()
         newList = handList
         if len(handList) >= 7:
@@ -86,30 +85,32 @@ class scrabble:
     ## End of GiveHand function
 
 
-    def exchangeHand(someList, someHand):
-        if len(someList) <= 7:
-            return "You cannot exchange when there are 7 or less tiles in the bag"
+    def exchangeHand(tilesBag, someHand):
+        '''
+            Exhanges given tiles for new ones in the tile bag so long
+            there are more than 7 tiles in the bag
+        '''
+        if len(tilesBag) <= 7:
+            return "You cannot exchange tiles when there are 7 or less tiles in the bag \n"
         else:
-            removeTiles = input("\nWhat letters do you want to exchange: ").upper()
+            removeTiles = input("\nWhich letters do you want to exchange: ").upper()
             if len(removeTiles) <= 7:
                 for letters in removeTiles:
                     if letters in someHand:
-                        someList += letters
+                        tilesBag += letters
                         someHand.remove(letters)
-                scrabble.tiles = someList
-            print()
+                scrabble.tiles = tilesBag
             scrabble.hand = someHand
             return scrabble.giveHand(someHand)
     ## End of Exchange function
 
 
     def checkWord(someAnswer, someHand):
-        # TODO:
         """
-            see if word exist in wordbucket
+            Verifies if given word exist in wordbucket,
             every letter used to answer be removed from hand        
         """
-        # global hand
+        nonExistent = "\n Lol, That word does not exist in my vocabulary\n"
         newList = []
         spareHand = []
         spareHand += someHand
@@ -122,7 +123,7 @@ class scrabble:
                         scrabble.hand.remove(letter)
                 print(f"You scored {scrabble.calcPoints(someAnswer)} points.\n")
             else:
-                print("\n Lol, That word does not exist in my vocabulary\n")
+                print(nonExistent)
         elif someAnswer in scrabble.wordBucket:
             for letter in someAnswer:
                 if letter in someHand:
@@ -142,7 +143,7 @@ class scrabble:
             return scrabble.giveHand(scrabble.hand)
 
         else:
-            print("\n Lol, That word does not exist in my vocabulary\n")
+            print(nonExistent)
         return scrabble.giveHand(someHand)
     ## End of checkWord function
 ## End of Scrabble class
