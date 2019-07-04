@@ -45,7 +45,7 @@ class scrabble:
                         if Words[wordIndex] != "":
                             scrabble.wordBucket.append(Words[wordIndex])
                         
-        return len(scrabble.wordBucket) # print(f"{len(scrabble.wordBucket)} words have been loaded to the Bucket")
+        return print(f"{len(scrabble.wordBucket)} words have been loaded...")
     ## End of OpenFile() method
 
 
@@ -143,8 +143,8 @@ class scrabble:
     ## End of checkWord function
 ## End of Scrabble class
 
-print("\n Type '.EX' to exchange tiles in your hand. .EX \n")
 scrabble.openFile()
+print("\n Type '.EX' to exchange tiles in your hand. .EX \n")
 scrabble.giveHand(scrabble.hand)
 
 while True:
