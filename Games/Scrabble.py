@@ -6,8 +6,8 @@ class scrabble:
     os.chdir("d:/Documents")
     # print(f"\n{os.getcwd()}")
 
-    VOWELS = 'aeiou'
-    CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
+    # VOWELS = 'aeiou'
+    # CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
 
     ScrabbleLetterValue = {
         'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4,
@@ -17,8 +17,6 @@ class scrabble:
     }
 
     wordBucket = []
-    steps = 0
-    guesses = 3
     score = 0
     turn = 0
     hand = []
@@ -55,8 +53,7 @@ class scrabble:
         '''Calculate points for a given word'''
         points = 0
         for letter in word.lower():
-            if letter in scrabble.ScrabbleLetterValue.keys():
-                points += scrabble.ScrabbleLetterValue[letter]
+            points += scrabble.ScrabbleLetterValue.get(letter,0)
         points *= len(word)
         if len(word) == 7 and scrabble.turn == 1:
             points += 50
@@ -66,8 +63,8 @@ class scrabble:
 
     def giveHand(handList):
         '''Deals 7 tiles to a player.'''
-        scrabble.openFile()
-        newList = handList
+        newList = []
+        newList += handList
         if len(handList) >= 7:
             return handList
         elif len(scrabble.tiles) <= 0:
@@ -80,8 +77,8 @@ class scrabble:
                 newList += newtiles
                 for letter in newtiles:
                     scrabble.tiles.remove(letter.lower())
-            handList = newList
-        return handList
+            scrabble.hand = newList
+        return scrabble.hand
     ## End of GiveHand function
 
 
@@ -105,43 +102,41 @@ class scrabble:
     ## End of Exchange function
 
 
-    def checkWord(someAnswer, someHand):
-        """
-            Verifies if given word exist in wordbucket,
-            every letter used to answer be removed from hand        
-        """
-        nonExistent = "\n Lol, That word does not exist in my vocabulary\n"
+    def verifyWord(someAnswer, someHand):
+        '''Verifies that the letters used to form a word are from the given hand'''
         newList = []
         spareHand = []
         spareHand += someHand
+        for letter in someAnswer:
+            if letter in someHand:
+                newList.append(letter)
+            elif letter not in someHand:
+                print(f"\n {letter} does not exist in the hand given to you.\n")
+                return scrabble.giveHand(someHand)
+        for nletter in newList:
+            if nletter in spareHand:
+                spareHand.remove(nletter)
+            else:
+                print("\n Letters that appear once in hand cannot be used twice\n")
+                return scrabble.giveHand(someHand)
+        scrabble.hand = spareHand
+        print(f"\nYou scored {scrabble.calcPoints(someAnswer)} points\n")
+        return scrabble.giveHand(scrabble.hand)
+    # End of VerifyWord function
+
+
+    def checkWord(someAnswer, someHand):
+        '''Verifies if given word exist in wordbucket'''
+        nonExistent = "\n Lol, That word does not exist in my vocabulary\n"
         if "*" in someAnswer:
-            wildWord = input("What letter replaces the '*'? ")
+            wildWord = input("Which letter should replace the '*'? ")
             newWord = someAnswer.replace("*",wildWord.upper())
             if newWord in scrabble.wordBucket:
-                for letter in someAnswer:
-                    if letter in someHand:
-                        scrabble.hand.remove(letter)
-                print(f"You scored {scrabble.calcPoints(someAnswer)} points.\n")
+                scrabble.verifyWord(someAnswer, scrabble.hand)
             else:
                 print(nonExistent)
         elif someAnswer in scrabble.wordBucket:
-            for letter in someAnswer:
-                if letter in someHand:
-                    newList.append(letter)
-                elif letter not in someHand:
-                    print(f"\n {letter} does not exist in the hand given to you.\n")
-                    return scrabble.giveHand(someHand)
-            for nletter in newList:
-                if nletter in spareHand:
-                    spareHand.remove(nletter)
-                else:
-                    print("\n Letters that appear once cannot be used twice\n")
-                    return scrabble.giveHand(scrabble.hand) 
-            scrabble.hand = spareHand
-                
-            print(f"\nYou scored {scrabble.calcPoints(someAnswer)} points\n")
-            return scrabble.giveHand(scrabble.hand)
-
+            scrabble.verifyWord(someAnswer, scrabble.hand)
         else:
             print(nonExistent)
         return scrabble.giveHand(someHand)
@@ -149,6 +144,7 @@ class scrabble:
 ## End of Scrabble class
 
 print("\n Type '.EX' to exchange tiles in your hand. .EX \n")
+scrabble.openFile()
 scrabble.giveHand(scrabble.hand)
 
 while True:
